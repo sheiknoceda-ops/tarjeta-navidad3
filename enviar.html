@@ -1,98 +1,94 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Enviar</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enviar Tarjeta</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <!-- EmailJS versión nueva -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script>
-        (function() {
-            emailjs.init("quxxlveFyKB7vkEpy"); 
-        })();
+        emailjs.init({
+            publicKey: "quxxlveFyKB7vkEpy"
+        });
     </script>
 
     <style>
-        .preview-container{
-            width:100%;
-            height:220px;
-            margin-top:15px;
-            border-radius:20px;
-            overflow:hidden;
-            border:4px solid #006400;
-            background:#ddd;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            text-align:center;
-            padding:10px;
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
         }
-
-        .texto-preview{
-            font-size:20px;
-            font-weight:bold;
-            color:#b30000;
-            white-space: pre-wrap;
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1259b0;
+        }
+        #confirmacion {
+            margin-top: 15px;
+            font-weight: bold;
+            color: green;
         }
     </style>
 </head>
 
-<body class="centrado">
+<body>
     <div class="card">
-        <h2>Enviar Saludo</h2>
+        <h2>Enviar Tarjeta de Navidad</h2>
 
-        <div class="preview-container">
-            <div id="vistaTarjeta" class="texto-preview">
-                Tu mensaje aparecerá aquí
-            </div>
-        </div>
+        <label>Correo del destinatario:</label>
+        <input type="email" id="correo" placeholder="ejemplo@gmail.com" style="width:100%; padding:10px; margin-top:5px;">
 
-        <input type="email" id="correo" placeholder="Ingrese Correo">
+        <label style="margin-top:10px; display:block;">Mensaje:</label>
+        <textarea id="mensaje" placeholder="Escribe tu mensaje..." style="width:100%; height:120px; padding:10px;"></textarea>
 
-        <button onclick="enviar()">Enviar</button>
+        <button onclick="enviarTarjeta()">Enviar Tarjeta</button>
 
-        <p id="confirmacion" style="margin-top:10px; font-weight:bold;"></p>
-
-        <a href="tarjeta.html" class="btn">⬅️ Regresar</a>
+        <p id="confirmacion"></p>
     </div>
 
     <script>
-        const mensaje = localStorage.getItem("mensajeTarjeta");
-        if (mensaje) {
-            document.getElementById("vistaTarjeta").innerText = mensaje;
-        }
+        function enviarTarjeta() {
+            const correoDestino = document.getElementById("correo").value.trim();
+            const contenidoTarjeta = document.getElementById("mensaje").value.trim();
 
-        function enviar() {
-            const correo = document.getElementById("correo").value;
-            const tarjeta = document.getElementById("vistaTarjeta").innerText;
-
-            if (correo === "") {
-                alert("Ingrese un correo válido");
+            if (correoDestino === "" || contenidoTarjeta === "") {
+                alert("Por favor llena todos los campos.");
                 return;
             }
 
             const params = {
-                correoDestino: correo,
-                contenidoTarjeta: tarjeta,
+                correoDestino: correoDestino,
+                contenidoTarjeta: contenidoTarjeta
             };
 
-            emailjs
-                .send("service_is24smn", "template_tqqq0xh", params)
-                .then(() => {
-                    document.getElementById("confirmacion").innerText =
-                        "✅ Saludo enviado correctamente";
-                })
-                .catch(() => {
-                    alert("Error al enviar. Revisa tu EmailJS.");
-                });
+            emailjs.send("service_is24smn", "template_tqqq0xh", params)
+            .then(function() {
+                document.getElementById("confirmacion").innerText =
+                    "✅ Tarjeta enviada correctamente";
+            }, function(error) {
+                console.error(error);
+                alert("Error al enviar. Verifica tu SERVICE_ID, TEMPLATE_ID y PUBLIC_KEY.");
+            });
         }
-
-        document.getElementById("correo").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                enviar();
-            }
-        });
     </script>
 </body>
 </html>
+
 
