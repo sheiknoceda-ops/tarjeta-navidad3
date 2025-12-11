@@ -1,0 +1,67 @@
+*{
+    box-sizing:border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url(Snoopy’s\ Christmas\ Fireplace\ Evening\ 🎅\ Cozy\ Lofi\ Beats\ for\ Winter🔥Calm\ Lofi\ for\ Peaceful\ Holiday.jfif);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+}
+
+.centrado{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.card{
+    background-color: firebrick;
+    padding: 15px;
+    width: 350px;
+    max-width: 90%;
+    height: auto;
+    margin: 80px auto;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 0 0 12px black;
+    overflow: hidden;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+    justify-content: center;
+}
+.card h2{
+    color: darkred;
+    margin-bottom: 15px;
+    font-family: "fantasy", cursive;
+}
+input, textarea, select{
+    width: 100%;
+    margin-bottom: 8px;
+    padding: 7px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+}
+button, .btn{
+    background: white;
+    color: darkred;
+    padding: 9px;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.preview{
+    background: azure;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    min-height: 60px;
+}
