@@ -57,42 +57,32 @@
     </div>
 
     <script>
-        const mensaje = localStorage.getItem("mensajeTarjeta");
-        if (mensaje) {
-            document.getElementById("vistaTarjeta").innerText = mensaje;
+    const tarjetaHTML = localStorage.getItem("tarjetaCompleta");
+    document.getElementById("vistaTarjeta").innerHTML = tarjetaHTML;
+
+    function enviar(){
+        const correo = document.getElementById("correo").value;
+
+        if(!correo){
+            alert("Ingrese un correo válido");
+            return;
         }
 
-        function enviar() {
-            const correo = document.getElementById("correo").value;
-            const tarjeta = document.getElementById("vistaTarjeta").innerText;
+        const params = {
+            correoDestino: correo,
+            contenidoTarjeta: tarjetaHTML
+        };
 
-            if (correo === "") {
-                alert("Ingrese un correo válido");
-                return;
-            }
-
-            const params = {
-                correoDestino: correo,
-                contenidoTarjeta: tarjeta
-            };
-
-            emailjs
-                .send("service_is24smn", "template_tqqq0xh", params)
-                .then(() => {
-                    document.getElementById("confirmacion").innerText =
-                        "✅ Saludo enviado correctamente";
-                })
-                .catch(() => {
-                    alert("Error al enviar. Revisa tu EmailJS.");
-                });
-        }
-
-        document.getElementById("correo").addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                enviar();
-            }
+        emailjs.send("service_is24smn", "template_tqqq0xh", params)
+        .then(() => {
+            document.getElementById("confirmacion").innerText =
+                "✅ Saludo enviado correctamente";
+        })
+        .catch(() => {
+            alert("Error al enviar. Revisa tu EmailJS.");
         });
-    </script>
+    }
+</script>
 
 </body>
 </html>
