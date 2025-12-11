@@ -152,49 +152,85 @@
 
         <a href="index.html" class="btn btn-regresar">⬅️ Regresar</a>
     </div>
-
     <script>
-        function mostrarContenido(){
-            const tipo = document.getElementById("tipo").value;
-            const tarjeta = document.getElementById("tarjetaContainer");
-            const video = document.getElementById("videoContainer");
+    let imagenBase64 = "";
+    let videoBase64 = "";
 
-            if(tipo === "video"){
-                tarjeta.style.display = "none";
+    function mostrarContenido(){
+        const tipo = document.getElementById("tipo").value;
+        const tarjeta = document.getElementById("tarjetaContainer");
+        const video = document.getElementById("videoContainer");
+
+        if(tipo === "video"){
+            tarjeta.style.display = "none";
+            video.style.display = "block";
+        } else {
+            tarjeta.style.display = "block";
+            video.style.display = "none";
+        }
+    }
+
+    function previewTexto(){
+        const texto = document.getElementById("mensaje").value;
+        document.getElementById("textoPreview").innerText = texto;
+
+        guardarTarjeta();
+    }
+
+    function mostrarImagen(event){
+        const archivo = event.target.files[0];
+
+        if(archivo){
+            const reader = new FileReader();
+            reader.onload = function(e){
+                imagenBase64 = e.target.result;
+                document.getElementById("imgPreview").src = imagenBase64;
+                guardarTarjeta();
+            }
+            reader.readAsDataURL(archivo);
+        }
+    }
+
+    function mostrarVideo(event){
+        const archivo = event.target.files[0];
+
+        if(archivo){
+            const reader = new FileReader();
+            reader.onload = function(e){
+                videoBase64 = e.target.result;
+                const video = document.getElementById("videoPreview");
+                video.src = videoBase64;
                 video.style.display = "block";
-            } else {
-                tarjeta.style.display = "block";
-                video.style.display = "none";
+                guardarTarjeta();
             }
+            reader.readAsDataURL(archivo);
+        }
+    }
+
+    function guardarTarjeta(){
+        const tipo = document.getElementById("tipo").value;
+        const texto = document.getElementById("mensaje").value;
+
+        let tarjetaHTML = "";
+
+        if(tipo === "tarjeta"){
+            tarjetaHTML = `
+                <div style="text-align:center;">
+                    <img src="${imagenBase64}" style="width:100%;border-radius:20px;">
+                    <h3>${texto}</h3>
+                </div>`;
+        } else {
+            tarjetaHTML = `
+                <div style="text-align:center;">
+                    <video style="width:100%;" controls src="${videoBase64}"></video>
+                    <h3>${texto}</h3>
+                </div>`;
         }
 
-        function previewTexto(){
-            const texto = document.getElementById("mensaje").value;
-            document.getElementById("textoPreview").innerText = texto;
-
-            // ✔️ Guardar el mensaje para enviar
-            localStorage.setItem("mensajeTarjeta", texto);
-        }
-
-        function mostrarImagen(event){
-            const img = document.getElementById("imgPreview");
-            const archivo = event.target.files[0];
-
-            if(archivo){
-                img.src = URL.createObjectURL(archivo);
-            }
-        }
-
-        function mostrarVideo(event){
-            const video = document.getElementById("videoPreview");
-            const archivo = event.target.files[0];
-
-            if(archivo){
-                video.src = URL.createObjectURL(archivo);
-                video.style.display = "block";
-            }
-        }
-    </script>
+        localStorage.setItem("tarjetaCompleta", tarjetaHTML);
+    }
+</script>
 
 </body>
 </html>
+
